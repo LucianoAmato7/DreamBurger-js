@@ -1,0 +1,36 @@
+/* Nosotros comienzo */
+
+.containerNos {
+    padding-top: 15%;
+}
+
+.h1nosotros {
+    font-size: 3rem;
+    text-align: center;
+    font-weight: bold;
+    border-top: 4px solid black;
+    border-bottom: 4px solid black;
+    border-radius: 15px;
+    text-shadow: 2px 2px 5px;
+}
+
+.vidNosotros {
+    border: 10px ridge rgb(156, 70, 0);
+    border-radius: 5px;
+    width: 550px;
+    height: 315px;
+}
+
+.rowVideo{
+    background: linear-gradient(rgb(7, 5, 0), rgba(255, 153, 0, 0.692));
+}
+
+.abotonesNosotros {
+    border-radius: 30px;
+    border: double rgb(92, 41, 0);
+    border-width: 5px;
+    align-self: center;
+    width: 25%;
+}
+
+/* Nosotros Fin */

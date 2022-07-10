@@ -1,0 +1,221 @@
+// variable aplicada en el color de letra de los botones navegables en las secciones: "menu" y "catering". 
+$buttoncolor: #ffc107;
+
+@import "generales";
+@import "menu";
+@import "catering";
+@import "nosotros";
+@import "contactos";
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,300;1,200&family=Island+Moments&family=Oswald:wght@300&display=swap');
+
+/* inicio comienzo */
+
+.carouselInicio {
+    margin-top: 10.8%;
+}
+
+.h1Index {
+    font-size: 3rem;
+    border-top: solid 4px black;
+    border-bottom: solid 4px black;
+    border-radius: 10px;
+    text-shadow: 2px 2px 5px;
+}
+
+.h2index {
+    font-size: 28px;
+    @extend.h1Index;
+}
+    
+.imgSecciones {
+    border-radius: 15px;
+    transition: all;
+    transition-duration: 0.3s;
+
+    &:hover{
+        transform: scale(1.04);
+    }
+
+}
+
+/* inicio fin */
+
+/* MEDIA QUERYS*/
+
+@media (max-width:992px){
+
+    .seccionesNav {
+        transition: none;
+        transition-duration: none;
+        margin: 0;
+    }
+    
+    .seccionesNav:hover {
+        transform: none;
+    }
+
+    // contacto comienzo
+
+    .colCont {
+        border-left: none;
+        border-top: 3px solid black;
+        border-bottom: 3px solid black;
+    }
+
+    // contacto fin
+}
+
+@media (max-width:830px){
+
+    /* inicio comienzo */
+
+    .h1Index {
+        font-size: 35px;
+    }
+
+    .h2index {
+        font-size: 20px;
+    }
+
+    /* inicio fin */
+
+    // catering comienzo
+
+    .carouselCatering {
+        margin-top: 11.7%;
+    }
+
+    // catering fin
+
+    /* nosotros comienzo */
+
+    .containerNos {
+        padding-top: 20%;
+    }
+
+    .abotonesNosotros {
+        width: 50%;
+    }
+
+    /* nosotros fin */
+}
+
+@media (max-width:630px){
+
+    /* inicio comienzo */
+
+    .h1Index {
+        font-size: 30px ;
+    }
+
+    .h2index {
+        font-size: 19px;
+    }
+
+    .titcards {
+        font-size: 30px;
+    }
+
+    /* inicio fin */
+
+    /* menu comienzo */
+
+    .artaptexto {
+        display: flex;
+        align-self: center;
+        flex-direction: column;
+        margin: 40px;
+        font-size: 20px;
+    }
+
+    /* menu fin */
+
+    /*footer comienzo*/
+
+    footer {
+        .logosRedesFlex {
+            a {
+                i{
+                    font-size: 40px;
+                }
+            }
+        }
+        p{
+            font-size: 10px;
+        }
+    }
+
+    /*footer fin*/
+
+}
+
+@media (max-width:500px){
+
+    // inicio comienzo
+
+    .carouselInicio {
+        margin-top: 12.9%;
+    }
+
+    // inicio fin
+
+    // menu comienzo
+
+    .containerMenu {
+        padding-top: 18%;
+    }
+
+    // menu fin
+
+    // catering comienzo
+
+    .carouselCatering {
+        margin-top: 12.9%;
+    }
+
+    // catering fin
+
+    /* nosotros comienzo */
+
+    .h1nosotros {
+        font-size: 2.1rem;
+    }
+
+    .abotonesNosotros {
+        width: 70%;
+    }
+    
+    /* nosotros fin */
+}
+
+@media (max-width:350px){
+
+    // inicio comienzo
+
+    .h1Index {
+        font-size: 25px;
+        margin-bottom: 10px;
+    }
+
+    .h2index {
+        font-size: 18px;
+    }
+
+    // inicio fin
+
+    /* menu comienzo */
+
+    .h1ap {
+        font-size: 2.4rem;
+    }
+
+    /* menu fin */
+
+    // nosotros comienzo
+
+    .h1nosotros {
+        font-size: 1.5rem;
+    }
+
+    // nosotros fin
+}
