@@ -2,7 +2,7 @@
 * {
   padding: 0;
   margin: 0;
-  font-family: 'Oswald', sans-serif;
+  font-family: "Oswald", sans-serif;
 }
 
 body {
@@ -27,24 +27,18 @@ header {
 }
 
 .navbar-nav {
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  align-items: center;
 }
 
 .seccionesNav {
   text-decoration: none;
   font-style: italic;
   margin: 10px;
-  -webkit-transition: all;
   transition: all;
-  -webkit-transition-duration: 0.5s;
-          transition-duration: 0.5s;
+  transition-duration: 0.5s;
 }
-
 .seccionesNav:hover {
-  -webkit-transform: scale(1.3);
-          transform: scale(1.3);
+  transform: scale(1.3);
 }
 
 /*header fin*/
@@ -56,40 +50,26 @@ footer {
   margin-bottom: 0;
   width: 100%;
 }
-
 footer .logosRedesFlex {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -ms-flex-line-pack: start;
-      align-content: flex-start;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -ms-flex-pack: distribute;
-      justify-content: space-around;
+  align-content: flex-start;
+  align-items: center;
+  justify-content: space-around;
   height: 70%;
 }
-
 footer .logosRedesFlex a {
-  -webkit-transition: all;
   transition: all;
-  -webkit-transition-duration: 0.3s;
-          transition-duration: 0.3s;
+  transition-duration: 0.3s;
 }
-
 footer .logosRedesFlex a:hover {
-  -webkit-transform: scale(1.2);
-          transform: scale(1.2);
+  transform: scale(1.2);
 }
-
 footer .logosRedesFlex a i {
   font-size: 55px;
-  color: #ffa600;
+  color: rgb(255, 166, 0);
   margin-top: 10px;
   height: 10px;
 }
-
 footer p {
   margin: 0px 10px 0px 10px;
   text-align: right;
@@ -128,17 +108,11 @@ footer p {
 }
 
 .titcards {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
   font-size: 2.5rem;
   text-align: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  align-items: center;
+  justify-content: center;
   margin: 30px;
   border-top: solid 4px black;
   border-bottom: solid 4px black;
@@ -152,18 +126,10 @@ footer p {
 }
 
 .cardshb {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-pack: distribute;
-      justify-content: space-around;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
 }
 
 .card {
@@ -172,34 +138,23 @@ footer p {
 }
 
 .selectdeli {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .animImg {
-  -webkit-transition: all;
   transition: all;
-  -webkit-transition-duration: 0.8s;
-          transition-duration: 0.8s;
+  transition-duration: 0.8s;
 }
-
 .animImg:hover {
-  -webkit-transform: scale(1.2);
-          transform: scale(1.2);
+  transform: scale(1.2);
 }
 
 .carritoMenu {
   font-size: 35px;
   border-radius: 30px;
-  border: double #5c2900;
+  border: double rgb(92, 41, 0);
   border-width: 5px;
   padding: 10px;
   font-weight: bold;
@@ -211,14 +166,11 @@ footer p {
 }
 
 .offCanv {
-  background: -webkit-gradient(linear, left top, left bottom, from(#fbdb71), to(white));
-  background: linear-gradient(#fbdb71, white);
+  background: linear-gradient(rgb(251, 219, 113), white);
 }
-
 .offCanv .bodyCarrito ul {
   list-style: none;
 }
-
 .offCanv .bodyCarrito p {
   margin-left: 9%;
 }
@@ -245,10 +197,9 @@ tr:hover td {
 }
 
 .artlistInfo {
-  border: 8px groove #642d00;
+  border: 8px groove rgb(100, 45, 0);
   border-radius: 20px;
-  background: -webkit-gradient(linear, left top, left bottom, from(#ffeeda), to(#ffd06b));
-  background: linear-gradient(#ffeeda, #ffd06b);
+  background: linear-gradient(rgb(255, 238, 218), rgb(255, 208, 107));
 }
 
 .divContacto {
@@ -258,7 +209,7 @@ tr:hover td {
 .aContacto {
   font-size: 35px;
   border-radius: 30px;
-  border: double #5c2900;
+  border: double rgb(92, 41, 0);
   border-width: 5px;
   padding: 10px;
   font-weight: bold;
@@ -286,24 +237,21 @@ tr:hover td {
 }
 
 .vidNosotros {
-  border: 10px ridge #9c4600;
+  border: 10px ridge rgb(156, 70, 0);
   border-radius: 5px;
   width: 550px;
   height: 315px;
 }
 
 .rowVideo {
-  background: -webkit-gradient(linear, left top, left bottom, from(#070500), to(rgba(255, 153, 0, 0.692)));
-  background: linear-gradient(#070500, rgba(255, 153, 0, 0.692));
+  background: linear-gradient(rgb(7, 5, 0), rgba(255, 153, 0, 0.692));
 }
 
 .abotonesNosotros {
   border-radius: 30px;
-  border: double #5c2900;
+  border: double rgb(92, 41, 0);
   border-width: 5px;
-  -ms-flex-item-align: center;
-      -ms-grid-row-align: center;
-      align-self: center;
+  align-self: center;
   width: 25%;
 }
 
@@ -318,7 +266,7 @@ tr:hover td {
 }
 
 .formcont {
-  background-color: #ffe5bd;
+  background-color: rgb(255, 229, 189);
   border-radius: 10px;
 }
 
@@ -336,15 +284,10 @@ tr:hover td {
 }
 
 .redesCont {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -ms-flex-pack: distribute;
-      justify-content: space-around;
+  justify-content: space-around;
   height: 80px;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  align-items: center;
   border-right: black;
 }
 
@@ -384,30 +327,23 @@ tr:hover td {
 
 .imgSecciones {
   border-radius: 15px;
-  -webkit-transition: all;
   transition: all;
-  -webkit-transition-duration: 0.3s;
-          transition-duration: 0.3s;
+  transition-duration: 0.3s;
 }
-
 .imgSecciones:hover {
-  -webkit-transform: scale(1.04);
-          transform: scale(1.04);
+  transform: scale(1.04);
 }
 
 /* inicio fin */
 /* MEDIA QUERYS*/
 @media (max-width: 992px) {
   .seccionesNav {
-    -webkit-transition: none;
     transition: none;
-    -webkit-transition-duration: none;
-            transition-duration: none;
+    transition-duration: none;
     margin: 0;
   }
   .seccionesNav:hover {
-    -webkit-transform: none;
-            transform: none;
+    transform: none;
   }
   .colCont {
     border-left: none;
@@ -415,7 +351,6 @@ tr:hover td {
     border-bottom: 3px solid black;
   }
 }
-
 @media (max-width: 830px) {
   /* inicio comienzo */
   .h1Index, .h2index {
@@ -437,7 +372,6 @@ tr:hover td {
   }
   /* nosotros fin */
 }
-
 @media (max-width: 630px) {
   /* inicio comienzo */
   .h1Index, .h2index {
@@ -452,15 +386,9 @@ tr:hover td {
   /* inicio fin */
   /* menu comienzo */
   .artaptexto {
-    display: -webkit-box;
-    display: -ms-flexbox;
     display: flex;
-    -ms-flex-item-align: center;
-        align-self: center;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-            flex-direction: column;
+    align-self: center;
+    flex-direction: column;
     margin: 40px;
     font-size: 20px;
   }
@@ -474,7 +402,6 @@ tr:hover td {
   }
   /*footer fin*/
 }
-
 @media (max-width: 500px) {
   .carouselInicio {
     margin-top: 12.9%;
@@ -494,7 +421,6 @@ tr:hover td {
   }
   /* nosotros fin */
 }
-
 @media (max-width: 350px) {
   .h1Index, .h2index {
     font-size: 25px;
@@ -511,5 +437,4 @@ tr:hover td {
   .h1nosotros {
     font-size: 1.5rem;
   }
-}
-/*# sourceMappingURL=estilos.css.map */
+}/*# sourceMappingURL=estilos.css.map */
