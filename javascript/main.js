@@ -1,10 +1,6 @@
 // Carrito de compra.
 
 
-let carrito = [];
-
-let totalCarrito = 0;
-
 
 // REGISTRO DE USUARIOS - PENDIENTE DE INTERACCION CON EL HTML.
 
@@ -89,11 +85,21 @@ let totalCarrito = 0;
    
 // }
 
+// CARRITO VACIO AL CUAL SE LE AGREGARAN PRODUCTOS.
+let carrito = [];
+
+// MONTO INICIAL DEL CARRITO, SE LE IRAN SUMANDO LOS PRECIOS DE LOS PRODUCTOS AGREGADOS AL CARRITO MEDIANTE LA FUNCION "Total" (linea-140)
+let totalCarrito = 0;
+
+// DOM - LLAMADO AL LISTADO DEL CARRITO (ul) EN HTML.
 let carritolist = document.querySelector("#listCarrito");
+
+// DOM - LLAMADO AL (p) EN DONDE FIGURARA EL TOTAL DEL CARRITO.
 let total = document.querySelector("#total");
 
 
-// SELECCION DE PRODUCTOS comienzo
+
+// PRODUCTOS
 let productos = [
     {nombre: "simple", categoria: "hamburguesa", precio: 280},
     {nombre: "doble", categoria: "hamburguesa", precio: 350},
@@ -128,12 +134,6 @@ let btnProd12 = document.querySelector("#prod12");
 let btnProd13 = document.querySelector("#prod13");
 
 
-// EVENTOS Y FUNCIONES DE BOTONES "AGREGAR A CARRITO":
-// AL CLICKEAR EN "AGREGAR AL CARRITO" SE PUSHEA EL PRODUCTO CORRESPONDIENTE AL ARRAY "CARRITO", CADA PRODUCTO AGREGADO ES PLASMADO DENTRO DEL CARRITO DEL HTML MEDIANTE UN LI DENTRO DEL CARRITO.
-// TAMBIEN SE CREA UN BOTON EL CUAL PROXIMAMENTE TENDRA LA FUNCION DE QUITAR EL ELEMENTO QUE SE DESEE DEL CARRITO.
-// SE EJECUTAN LAS FUNCIONES "Total" LA CUAL VA SUMANDO EL PRECIO DE LOS PRODUCTOS AGREGADOS Y LA FUNCION "TotalCarritohtml" LA CUAL PLASMA EL TOTAL EN EL HTML.
-
-
 // SUMA DE CADA PRODUCTO QUE SE AGREGA AL CARRITO EN UN TOTAL.
 function Total() { 
     let posicionArray = carrito.length-1;
@@ -145,6 +145,12 @@ function Total() {
 function TotalCarritohtml() {
     total.innerHTML = (`Total: $${totalCarrito}`);
 }    
+
+
+// EVENTOS Y FUNCIONES DE BOTONES "AGREGAR A CARRITO":
+// AL CLICKEAR EN "AGREGAR AL CARRITO" SE PUSHEA EL PRODUCTO CORRESPONDIENTE AL ARRAY "CARRITO", CADA PRODUCTO AGREGADO ES PLASMADO DENTRO DEL CARRITO DEL HTML MEDIANTE UN LI.
+// SE CREA UN BOTON EL CUAL PROXIMAMENTE TENDRA LA FUNCION DE QUITAR EL ELEMENTO QUE SE DESEE DEL CARRITO (HTML).
+// SE EJECUTAN LAS FUNCIONES "Total" LA CUAL VA SUMANDO EL PRECIO DE LOS PRODUCTOS AGREGADOS Y LA FUNCION "TotalCarritohtml" LA CUAL PLASMA EL TOTAL EN EL HTML.
 
 btnProd0.onclick = () =>{
     carrito.push(productos[0]); 
@@ -404,7 +410,7 @@ let envio = [
 
 
 
-// DESCUENTO POR CODIGO comienzo - PENDIENTE DE INTERACCION CON EL HTML.
+// DESCUENTO POR CODIGO - PENDIENTE DE INTERACCION CON EL HTML.
 
 // let descuento = prompt("¿Posee codigo de descuento?").toLowerCase();
 
@@ -434,5 +440,5 @@ let envio = [
 
 //         }
 //     }        
-// return totalCarrito;
+//      return totalCarrito;
 // }  
