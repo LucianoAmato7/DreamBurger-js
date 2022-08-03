@@ -42,8 +42,12 @@
                                 <a class="nav-link active text-warning seccionesNav" href="./contacto.html">Contacto</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link active text-warning seccionesNav" href="#offcanvasScrolling" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling">
-                                    <i class="fa-solid fa-cart-shopping"></i>
+                                <a class="m-4 nav-link active text-warning" href="#offcanvasScrolling" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling">
+                                    <i class="fa-solid fa-cart-shopping fs-2">
+                                        <span class="position-absolute top-75 start-75 translate-middle badge rounded-pill bg-danger fs-6" id="nCarrito">
+                                        0
+                                        </span>
+                                    </i>
                                 </a> 
                             </li>
                         </ul>
@@ -81,7 +85,10 @@
 
 
 
-        <div class="row" id="ContainerProd"></div>    
+        <div class="row" id="ContainerProd">
+
+    
+        </div>    
 
 
 
@@ -100,10 +107,13 @@
                     <div class="offcanvas-body bodyCarrito">
                         <ul class="border-bottom border-dark fs-5 pb-3" id="listCarrito">
                         </ul>
-                        <p class="fs-4" id="total"></p>
+                        <p class="p-1 fs-4 bg-warning bg-opacity-25" >
+                            TOTAL: $ <span id="total">0</span>
+                        </p>
                         <div class="d-flex flex-column m-3" >
-                            <p class="fs-4 m-0 my-3 text-decoration-underline d-flex justify-content-center" >ENVIO:</p>
-                            <select class="bg-warning fs-5 bg-opacity-25 border border-radius align-self-center" id="envio">
+                            <!-- CODIGO PARA SELECCIONAR EL ENVIO - A IMPLEMENTAR -->
+                            <!-- <p class="fs-4 m-0 my-3 text-decoration-underline d-flex justify-content-center" >ENVIO:</p> -->
+                            <!-- <select class="bg-warning fs-5 bg-opacity-25 border border-radius align-self-center" id="envio">
                                 <option value="retira en local">Retirar en local</option>
                                 <option value="palermo">Palermo</option>
                                 <option value="belgarno">Belgrano</option>
@@ -111,7 +121,7 @@
                                 <option value="chacarita">Chacarita</option>
                                 <option value="villa Crezpo">Villa Crezpo</option>
                                 <option value="recoleta">Recoleta</option>
-                            </select>
+                            </select> -->
                             <!-- <button id="btnAceptarEnvio">Aceptar</button> -->
                         </div>
                         <div class="d-flex justify-content-center" >

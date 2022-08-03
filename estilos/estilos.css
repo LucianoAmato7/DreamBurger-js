@@ -172,7 +172,9 @@ footer p {
   list-style: none;
 }
 .offCanv .bodyCarrito p {
-  margin-left: 9%;
+  margin-left: 8%;
+  border-radius: 5px;
+  width: 40%;
 }
 
 /* Menu fin */
