@@ -170,11 +170,26 @@ footer p {
 }
 .offCanv .bodyCarrito ul {
   list-style: none;
+  padding: 0 2% 0 2%;
 }
 .offCanv .bodyCarrito p {
-  margin-left: 8%;
+  margin-left: 2%;
   border-radius: 5px;
   width: 40%;
+}
+
+.alertaToast {
+  color: black;
+  font-size: 19px;
+  font-style: italic;
+  font-weight: bold;
+  border-radius: 5px;
+  background: linear-gradient(320deg, #ffffa4 0, #ffffa2 8.33%, #ffffa0 16.67%, #ffffa0 25%, #edffa0 33.33%, #d3ff9f 41.67%, #b9f29d 50%, #a1e29b 58.33%, #8dd599 66.67%, #7bc999 75%, #6cbf99 83.33%, #60b79a 91.67%, #56b19c 100%);
+  padding: 1% 2% 0.9% 0;
+}
+.alertaToast img {
+  width: 80px;
+  height: 70px;
 }
 
 /* Menu fin */
@@ -394,6 +409,9 @@ tr:hover td {
     margin: 40px;
     font-size: 20px;
   }
+  .alertaToast {
+    font-size: 15px;
+  }
   /* menu fin */
   /*footer comienzo*/
   footer .logosRedesFlex a i {
@@ -410,6 +428,13 @@ tr:hover td {
   }
   .containerMenu {
     padding-top: 18%;
+  }
+  .alertaToast {
+    font-size: 12px;
+  }
+  .alertaToast img {
+    width: 43px;
+    height: 33px;
   }
   .carouselCatering {
     margin-top: 12.9%;

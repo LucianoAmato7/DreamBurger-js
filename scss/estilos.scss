@@ -128,6 +128,10 @@ $buttoncolor: #ffc107;
         font-size: 20px;
     }
 
+    .alertaToast{
+        font-size: 15px;
+    }
+
     /* menu fin */
 
     /*footer comienzo*/
@@ -163,6 +167,16 @@ $buttoncolor: #ffc107;
 
     .containerMenu {
         padding-top: 18%;
+    }
+
+    .alertaToast{
+        font-size: 12px;
+
+        img{
+            width: 43px;
+            height: 33px;
+        }
+
     }
 
     // menu fin
