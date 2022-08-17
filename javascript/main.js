@@ -1,23 +1,5 @@
 // Carrito de compra.
 
-// PRODUCTOS
-let productos = [
-    {id: 1, cantidad: 1, nombre: "Simple", categoria: "hamburguesa", precio: 280, ingredientes: "carne, queso Cheddar y aderezo", img: "../img/Hamburguesaconqueso.jpg"},
-    {id: 2, cantidad: 1, nombre: "Doble", categoria: "hamburguesa", precio: 350, ingredientes: "doble carne, queso Cheddar y aderezo", img: "../img/Hamburguesadobleconqueso.jpg"},
-    {id: 3, cantidad: 1, nombre: "TinyDream", categoria: "hamburguesa", precio: 270, ingredientes: "carne, lechuga y tomate", img: "../img/tinydream.jpg"},
-    {id: 4, cantidad: 1, nombre: "ExtraCheese", categoria: "hamburguesa", precio: 350, ingredientes: "carne, doble queso cheddar, cebolla caramelizada y salsa ranchera", img: "../img/extracheese.png"},
-    {id: 5, cantidad: 1, nombre: "Completa", categoria: "hamburguesa", precio: 500, ingredientes: "carne, queso muzzarella, cebolla caramelizada, pepinillos, cebolla morada, tomate y lechuga", img: "../img/completa.png"},
-    {id: 6, cantidad: 1, nombre: "BigDream", categoria: "hamburguesa", precio: 430, ingredientes: "doble carne, queso cheddar, pepinillos y lechuga", img: "../img/bigdream.jpg"},
-    {id: 7, cantidad: 1, nombre: "DreamChoise", categoria: "hamburguesa", precio: 580, ingredientes: "triple Carne, queso cheddar, bacon, salsa dreamBurger, lechuga y tomate", img: "../img/dreamone.jpg"},
-    {id: 8, cantidad: 1, nombre: "TheChicken", categoria: "hamburguesa", precio: 270, ingredientes: "medallon de pollo, mayonesa y lechuga", img: "../img/hamburguesadepollo.jpg"},
-    {id: 9, cantidad: 1, nombre: "VeganDream", categoria: "hamburguesa", precio: 380, ingredientes: "carne vegana, pepinillos, tomate, lechuga y salsa vegan", img: "../img/veganDream.PNG"},
-    {id: 10, cantidad: 1, nombre: "PapasFritas", categoria: "acompaniamiento", precio: 120, ingredientes: "papas fritas sin aderezos", img: "../img/papasfritas.jpg"},
-    {id: 11, cantidad: 1, nombre: "Ensalada", categoria: "acompaniamiento", precio: 200, ingredientes: "tomate y lechuga", img: "../img/ensalada.jpg"},
-    {id: 12, cantidad: 1, nombre: "CocaCola", categoria: "bebida", precio: 130, ingredientes: "coca-cola", img: "../img/cocacola.png"},
-    {id: 13, cantidad: 1, nombre: "CocaColaZero", categoria: "bebida", precio: 130, ingredientes: "coca-cola zero", img: "../img/cocacola.png"},
-    {id: 14, cantidad: 1, nombre: "Agua mineral", categoria: "bebida", precio: 80, ingredientes: "agua", img: "../img/agua.jpg"}
-];
-
 // DOM - LLAMADO AL LISTADO DEL CARRITO (ul) EN HTML (offcanvas).
 let carritolist = document.querySelector("#listCarrito");
 
@@ -32,103 +14,142 @@ let btnComprar = document.querySelector("#comprar");
 // CARRITO VACIO AL CUAL SE LE AGREGARAN PRODUCTOS.
 let carrito = [];
 
-// CANTIDAD DEL PROD DENTRO DEL CARRITOREFLEJADA EN LA CARD.
-let cantUDentroCarrito = document.querySelector("cantU")
+// DOM LLAMA AL CONTADOR.
+let contadorCarrito = document.querySelector("#nCarrito");
 
 // LOCALSTORAGE LLAMA AL CARRITO SETEADO
 document.addEventListener("DOMContentLoaded", () => {
-    
+
+    // EJECUTA LA LLAMADA A DATOS (PRODUCTOS) CON FETCH.
+    ObtenerDatos();
+
     // OPERADOR LOGICO AND. 
     localStorage.getItem("carrito") && (carrito = JSON.parse(localStorage.getItem("carrito"))),  vistaCarrito();   
 
 })
 
-// DOM LLAMA AL CONTADOR.
-let contadorCarrito = document.querySelector("#nCarrito");
+// LLAMADA A DATOS DE PRODUCTOS CON FETCH
+const ObtenerDatos = () => {
+    
+    fetch("../javascript/products.json")
 
+    .then(resp => resp.json())
+    .then(productos => {
 
-// REPRESENTACION DE LOS PRODUCTOS EN HTML.
-
-productos.forEach((producto) => {
-
-    const {id, nombre, categoria, precio, ingredientes, img: imagenDelProducto} = producto;      // DESESTRUCTURACION - ALIAS APLICADO.
-    let cards = document.createElement("div");
-    cards.setAttribute("class", "col d-flex justify-content-center");
-    cards.innerHTML = `
-    <div class="card shadow" style="width: 18rem;">
-        <img src="${imagenDelProducto}" class="card-img-top animImg" alt="${categoria}, ${ingredientes}">
-        <div class="card-body">
-            <h5 class="card-title">${nombre.toUpperCase()}</h5>
-            <div class="dropdown mt-3 mb-2 selectdeli">
-                <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                Ingredientes
-                </button>
-                <ul class="dropdown-menu p-2" aria-labelledby="dropdownMenuButton1">
-                <li>${ingredientes}</li>
-                </ul>
-                <p class="fs-5 mb-0">$${precio}</p>
-            </div>
-            <div class="selectdeli">
-                <button type="button" class="btn btn-warning" id="${id}">Agregar a carrito</button>
-            </div>    
-        </div>
-    </div>`;
-
-    container.appendChild(cards);
-
-    // BOTON AGREGAR AL CARRITO:
-    let btnAgregar = document.getElementById(id);
-
-    btnAgregar.addEventListener("click", () => {   
-
-        agregarCarrito(id); 
-
-        Toastify({          // FRAMEWORK - ALERTA CUANDO SE AGREGA UN PRODUCTO AL CARRITO.
-
-            text: `¡Se ha agregado al carrito!`,
-            duration: 2000,
-            className: "alertaToast",           // LOS ESTILOS ESTAN EN EL SCSS "MENU".
-            avatar: `${imagenDelProducto}`,
-            gravity: "top",
-            offset: {
-                x: 0,
-                y: `8.5em`
-            },
+        // REPRESENTACION DE LOS PRODUCTOS EN HTML.
+        productos.forEach((producto) => {
             
+            const {id, nombre, categoria, precio, ingredientes, img: imagenDelProducto} = producto;      // DESESTRUCTURACION - ALIAS APLICADO.
+            
+            let cards = document.createElement("div");
+            cards.setAttribute("class", "col d-flex justify-content-center");
+            cards.innerHTML = `
+            <div class="card shadow" style="width: 18rem;">
+                <img src="${imagenDelProducto}" class="card-img-top animImg" alt="${categoria}, ${ingredientes}">
+                <div class="card-body">
+                    <h5 class="card-title">${nombre.toUpperCase()}</h5>
+                    <div class="dropdown mt-3 mb-2 selectdeli">
+                        <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            Ingredientes
+                        </button>
+                        <ul class="dropdown-menu p-2" aria-labelledby="dropdownMenuButton1">
+                            <li>${ingredientes}</li>
+                        </ul>
+                        <p class="fs-5 mb-0">$${precio}</p>
+                    </div>
+                    <div class="selectdeli">
+                        <button type="button" class="btn btn-warning" id="${id}">Agregar a carrito</button>
+                    </div>    
+                </div>
+            </div>`;
+                
+            container.appendChild(cards);
+            
+            // BOTON AGREGAR AL CARRITO:
+            let btnAgregar = document.getElementById(id);
+            
+            btnAgregar.addEventListener("click", () => {   
+                
+                agregarCarrito(id); 
+                
+                Toastify({          // FRAMEWORK - ALERTA CUANDO SE AGREGA UN PRODUCTO AL CARRITO.
+                    
+                    text: `¡Se ha agregado al carrito!`,
+                    duration: 2000,
+                    className: "alertaToast",           // LOS ESTILOS ESTAN EN EL SCSS "MENU".
+                    avatar: `${imagenDelProducto}`,
+                    gravity: "top",
+                    offset: {
+                        x: 0,
+                        y: `8.5em`
+                    },
+                    
+                }).showToast();
+                
+            });   
+                
+        });
+
+        // AGREGAR AL CARRITO - BUSCA EL PRODUCTO QUE COINCIDA CON EL PARAMETRO MEDIANTE ID.
+        const agregarCarrito = (prodId) => {      
+
+            // SUMA DE CANTIDAD DE C/U DE LOS PRODUCTOS DENTRO DEL CARRITO.
+            const existe = carrito.some(prod => prod.id === prodId)
+
+            if(existe) {
+
+                carrito.map(prod => {
+
+                    if(prod.id === prodId) {
+                        
+                        prod.cantidad++;
+                    } 
+
+                })
+
+            }else {
+                
+                const itemId = productos.find((producto) => producto.id === prodId);
+                carrito.push(itemId);
+
+            }
+
+            vistaCarrito();
+        };
+
+    })
+        
+    .catch(error => console.log(error))
+
+    .finally(() => {
+        
+        Toastify({          // FRAMEWORK - ALERTA CUANDO SE CARGANE EXITOSAMENTE LOS DATOS.
+            
+            text: `Datos cargados con exito`,
+            duration: 1000,
+            className: "alertaToastDatos",           // LOS ESTILOS ESTAN EN EL SCSS "MENU".
+            position: "center",
+        
         }).showToast();
 
-    });   
-    
-});
+    });
+
+};
 
 // FUNCION QUE MUESTRA LA CANTIDAD (N) DEL MISMO PRODUCTO EN CARRITO (DENTRO DE CADA CARD) - A IMPLEMENTAR
 
-// AGREGAR AL CARRITO - BUSCA EL PRODUCTO QUE COINCIDA CON EL PARAMETRO MEDIANTE ID.
-const agregarCarrito = (prodId) => {      
+// CODIGO DE PRUEBA PARA LA CANTIDAD DE PRODUCTOS EN CARRITO DE CADA CARD
+// const CantCardCarrito = () => {
 
-    // SUMA DE CANTIDAD DE C/U DE LOS PRODUCTOS DENTRO DEL CARRITO.
-    const existe = carrito.some(prod => prod.id === prodId)
+//     carrito.forEach((producto) => {
 
-    if(existe) {
+//         cantUDentroCarrito.innerHTML += `${producto.cantidad}`; (ESE BOTON NO SIRVE POR QUE NO DEFINE CADA UNO DE LOS PRODUCTOS)
+//     })
+    
+// }
+// CantCardCarrito()
 
-        carrito.map(prod => {
 
-            if(prod.id === prodId) {
-                
-                prod.cantidad++;
-            } 
-
-        })
-
-    }else {
-        
-        const itemId = productos.find((producto) => producto.id === prodId);
-        carrito.push(itemId);
-
-    }
-
-    vistaCarrito();
-};
 
 //BTN ELIMINAR PRODUCTO DEL CARRITO, BUSCA Y ELIMINA MEDIANTE ID
 const eliminar = (idProd) => {
@@ -203,12 +224,12 @@ btnComprar.addEventListener("click", () => {
             footer: 'Ante cualquier duda comuniquese a nuestro numero de wpp'
             
 
-        })
+        }),
+        
+        carrito = [],
+        vistaCarrito()
 
     ) : (  
-
-        carrito = [],
-        vistaCarrito(),
 
         Swal.fire({                                         
             title: '¡No ha agregado productos al carrito!',
@@ -249,7 +270,6 @@ btnComprar.addEventListener("click", () => {
 // Descuento por código. 
 
 // Modo Oscuro (Que se guarde en el LocalStorage). 
-
 
 
 
