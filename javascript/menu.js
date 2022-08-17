@@ -28,18 +28,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
 })
 
-// LLAMADA A DATOS DE PRODUCTOS CON FETCH
-const ObtenerDatos = () => {
+// LLAMADA A DATOS DE PRODUCTOS CON FETCH DE MANERA RELATIVA.
+const ObtenerDatos = async () => {
     
-    fetch("../javascript/products.json")
+    try { 
 
-    .then(resp => resp.json())
-    .then(productos => {
+        let resp = await fetch("../javascript/products.json");
+        let productos = await resp.json();
 
         // REPRESENTACION DE LOS PRODUCTOS EN HTML.
         productos.forEach((producto) => {
             
-            const {id, nombre, categoria, precio, ingredientes, img: imagenDelProducto} = producto;      // DESESTRUCTURACION - ALIAS APLICADO.
+            const {id, nombre, categoria, precio, ingredientes, img: imagenDelProducto} = producto;      // DESESTRUCTURACION - ALIAS APLICADO EN "IMG".
             
             let cards = document.createElement("div");
             cards.setAttribute("class", "col d-flex justify-content-center");
@@ -55,7 +55,7 @@ const ObtenerDatos = () => {
                         <ul class="dropdown-menu p-2" aria-labelledby="dropdownMenuButton1">
                             <li>${ingredientes}</li>
                         </ul>
-                        <p class="fs-5 mb-0">$${precio}</p>
+                        <p class="fs-4 mb-0">$${precio}</p>
                     </div>
                     <div class="selectdeli">
                         <button type="button" class="btn btn-warning" id="${id}">Agregar a carrito</button>
@@ -117,11 +117,11 @@ const ObtenerDatos = () => {
             vistaCarrito();
         };
 
-    })
+    } catch (error) {
         
-    .catch(error => console.log(error))
-
-    .finally(() => {
+        console.log(error);
+        
+    } finally {
         
         Toastify({          // FRAMEWORK - ALERTA CUANDO SE CARGANE EXITOSAMENTE LOS DATOS.
             
@@ -129,26 +129,11 @@ const ObtenerDatos = () => {
             duration: 1000,
             className: "alertaToastDatos",           // LOS ESTILOS ESTAN EN EL SCSS "MENU".
             position: "center",
-        
+            
         }).showToast();
-
-    });
-
-};
-
-// FUNCION QUE MUESTRA LA CANTIDAD (N) DEL MISMO PRODUCTO EN CARRITO (DENTRO DE CADA CARD) - A IMPLEMENTAR
-
-// CODIGO DE PRUEBA PARA LA CANTIDAD DE PRODUCTOS EN CARRITO DE CADA CARD
-// const CantCardCarrito = () => {
-
-//     carrito.forEach((producto) => {
-
-//         cantUDentroCarrito.innerHTML += `${producto.cantidad}`; (ESE BOTON NO SIRVE POR QUE NO DEFINE CADA UNO DE LOS PRODUCTOS)
-//     })
+    }
     
-// }
-// CantCardCarrito()
-
+};
 
 
 //BTN ELIMINAR PRODUCTO DEL CARRITO, BUSCA Y ELIMINA MEDIANTE ID
@@ -217,15 +202,18 @@ btnComprar.addEventListener("click", () => {
 
     carrito.length > 0 ? (                          // OPERADOR TERNARIO
 
+        // LOS DATOS SE GUARDARIAN EN ALGUN LADO ANTES DE SETEAR CANTIDADES A 1 Y CARRITO A 0.
+
         Swal.fire({                                 // FRAMEWORK - ALERTA AL PRESIONAR EL BOTON "PEDIR"
+            
             title: '¡Muchas gracias por tu compra!',
             text: 'Recibiras un email con la confirmacion del pedido',
             icon: 'success',
             footer: 'Ante cualquier duda comuniquese a nuestro numero de wpp'
             
-
         }),
         
+        carrito.forEach((prod) => {prod.cantidad = 1}),
         carrito = [],
         vistaCarrito()
 
@@ -270,17 +258,3 @@ btnComprar.addEventListener("click", () => {
 // Descuento por código. 
 
 // Modo Oscuro (Que se guarde en el LocalStorage). 
-
-
-
-
-// SELECCION DE ENVIO - A IMPLEMENTAR.
-
-// let envio = [
-//     {categoria: "envio", nombre: "palermo", precio: 200},
-//     {categoria: "envio", nombre: "belgrano", precio: 300},
-//     {categoria: "envio", nombre: "colegiales", precio: 300},
-//     {categoria: "envio", nombre: "chacarita", precio: 350},
-//     {categoria: "envio", nombre: "villa crezpo", precio: 300},
-//     {categoria: "envio", nombre: "recoleta", precio: 300}
-// ];
