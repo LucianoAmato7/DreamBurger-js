@@ -1,17 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Somos Dream Burger, dejanos tu consulta llenando un breve formulario. Contactanos mediantes nuestros multiples medios de comunicación disponibles. Accede a nuestras redes y números de contacto.">
-    <meta name="keywords" content="dreamburger, hamburguesa, hamburgueseria, comida, local, palermo, pedido, pedir, delivery, contacto, contactanos, formulario, consulta">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.1.1/css/all.css" integrity="sha384-/frq1SRXYH/bSyou/HUp/hib7RVN1TawQYja658FEOodR/FQBKVqT9Ol+Oz3Olq5" crossorigin="anonymous"/>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <meta name="description"
+        content="Somos Dream Burger, dejanos tu consulta llenando un breve formulario. Contactanos mediantes nuestros multiples medios de comunicación disponibles. Accede a nuestras redes y números de contacto.">
+    <meta name="keywords"
+        content="dreamburger, hamburguesa, hamburgueseria, comida, local, palermo, pedido, pedir, delivery, contacto, contactanos, formulario, consulta">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.1.1/css/all.css"
+        integrity="sha384-/frq1SRXYH/bSyou/HUp/hib7RVN1TawQYja658FEOodR/FQBKVqT9Ol+Oz3Olq5" crossorigin="anonymous" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="../estilos/estilos.css">
     <title>DreamBurger | Contacto</title>
 </head>
+
 <body>
 
     <header>
@@ -21,8 +27,10 @@
                 <a class="navbar-brand w-25 p-0" href="../index.html">
                     <img src="../img/logondb.png" class="imglogo" alt="logoDreamBurger">
                 </a>
-                <button class="navbar-toggler bg-warning" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+                <button class="navbar-toggler bg-warning" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse m-3 d-lg-flex justify-content-end" id="navbarNav">
                     <ul class="navbar-nav text-uppercase fs-3">
@@ -52,50 +60,60 @@
         </nav>
 
     </header>
- 
-    <div class="container containerCont">  
-         
+
+    <div class="container containerCont">
+
         <div class="row p-4">
 
             <div class="col-lg-8 p-4 colForm">
 
-                <form class="formcont shadow-lg p-4" data-aos="zoom-in">
+                <form class="formcont shadow-lg p-4" id="form" data-aos="zoom-in">
                     <h2 class="mb-4 fs-1 h2form">Dejanos tu consulta</h2>
                     <div class="mb-3">
                         <label for="nombreCompleto" class="form-label">Nombre completo</label>
-                        <input type="text" class="form-control" placeholder="Ingrese su nombre completo" id="nombreCompleto">
+                        <input type="text" class="form-control" placeholder="Ingrese su nombre completo" name="nombre"
+                            required>
                     </div>
                     <div class="mb-3">
                         <label for="email" class="form-label">Correo electrónico</label>
-                        <input type="email" class="form-control" placeholder="Ingrese su correo electrónico" id="email">
+                        <input type="email" class="form-control" placeholder="Ingrese su correo electrónico"
+                            name="email" required>
                     </div>
                     <div class="mb-3">
                         <label for="numero" class="form-label">Número de celular</label>
-                        <input type="number" class="form-control" placeholder="11 1234-5678" id="numero">
+                        <input type="number" class="form-control" placeholder="11 1234-5678" name="numero">
                     </div>
                     <div class="form-floating mb-3">
-                        <textarea class="form-control" placeholder="Comentario:" id="cajaDeConsulta"></textarea>
+                        <textarea class="form-control" placeholder="Comentario:" name="consulta" required></textarea>
                         <label for="cajaDeConsulta">Comentario:</label>
                     </div>
                     <div class="mb-3 form-check">
-                        <input type="checkbox" class="form-check-input" id="recibirInfo">
+                        <input type="checkbox" class="form-check-input" name="recibirInfo">
                         <label class="form-check-label" for="recibirInfo">Recibir información.</label>
                     </div>
                     <div>
-                        <button type="submit" class="btn btn-warning fs-5">Enviar</button>
-                        <button type="reset" class="btn btn-warning fs-5 resertc">Resetear</button>
-                    </div>        
+                        <input type="submit" id="button" value="ENVIAR" class="btn btn-warning fs-5">
+                    </div>
                 </form>
 
-            </div> 
-            
+                <!-- SCRIPT PARA PODER UTILIZAR EL EMAILJS (ENVIA EL FORMULARIO EN FORMA DE EMAIL A MI DIRECCION DE CORREO SIN NECESITAR UN SERVIDOR) -->
+                <script type="text/javascript"
+                    src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js">
+                </script>
+
+                <script type="text/javascript">
+                    emailjs.init('7axJ8k22fqj9bPSou')
+                </script>
+
+            </div>
+
             <div class="col-lg-4 p-4 colCont">
 
                 <ul class="listaCont mt-3" data-aos="zoom-in">
 
                     <li class="pb-lg-5 pb-2">Horarios: Martes a Domingo - 13:00hs a 23:00hs</li>
                     <li class="pb-lg-5 pb-2">Tel. fijo: 4712-2345</li>
-                    <li class="pb-lg-5 pb-2">WPP: 11 3875-2819 
+                    <li class="pb-lg-5 pb-2">WPP: 11 3875-2819
                         <a href="https://wa.me/541138752819" class="iconWpp" target="_blank">
                             <i class="fa-brands fa-whatsapp"></i>
                         </a>
@@ -104,35 +122,35 @@
                     <li class="pb-lg-5 pb-2">Ubicación: Palermo 1234, CABA</li>
                     <li>Responderemos a la brevedad</li>
 
-                </ul>  
+                </ul>
 
                 <div class="redesCont" data-aos="zoom-in">
 
-                    <a href="https://www.instagram.com/"target="_blank">
+                    <a href="https://www.instagram.com/" target="_blank">
                         <i class="fa-brands fa-instagram iconContacto"></i>
                     </a>
-        
+
                     <a href="https://www.facebook.com/" target="_blank">
                         <i class="fa-brands fa-facebook-square iconContacto"></i>
                     </a>
-        
+
                     <a href="https://twitter.com/" target="_blank">
                         <i class="fa-brands fa-twitter-square iconContacto"></i>
                     </a>
-                 
-                </div>    
+
+                </div>
 
             </div>
-        
+
         </div>
 
-    </div>  
+    </div>
 
-    <footer>   
+    <footer>
 
-        <div class="logosRedesFlex" >  
+        <div class="logosRedesFlex">
 
-            <a href="https://www.instagram.com/"target="_blank">
+            <a href="https://www.instagram.com/" target="_blank">
                 <i class="fa-brands fa-instagram"></i>
             </a>
 
@@ -154,11 +172,14 @@
 
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>
-        AOS.init();
-    </script>
+    <script>AOS.init();</script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.29/dist/sweetalert2.all.min.js"></script>
+    <script src="../javascript/contacto.js"></script>
 
 </body>
+
 </html>

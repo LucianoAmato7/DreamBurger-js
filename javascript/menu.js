@@ -9,7 +9,7 @@ let total = document.querySelector("#total");
 // DOM -LLAMADO AL CONTENEDOR DONDE SE INYECTAN LOS PRODUCTOS EN FORMA DE CARDS.
 let container = document.querySelector("#ContainerProd");
 
-let btnComprar = document.querySelector("#comprar");
+let btnContCompr = document.querySelector("#contCompra");
 
 // CARRITO VACIO AL CUAL SE LE AGREGARAN PRODUCTOS.
 let carrito = [];
@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // LLAMADA A DATOS DE PRODUCTOS CON FETCH DE MANERA RELATIVA.
 const ObtenerDatos = async () => {
-    
+
     try { 
 
         let resp = await fetch("../javascript/products.json");
@@ -43,6 +43,7 @@ const ObtenerDatos = async () => {
             
             let cards = document.createElement("div");
             cards.setAttribute("class", "col d-flex justify-content-center");
+            cards.setAttribute("data-aos", "zoom-in");  //ATRIBUTO PARA ANIMACION: AOS "Animate On Scroll Library" / APLICANDOSE DIRECTAMENTE EN EL INNERHTML GENERA UN ERROR QUE IMPIDE QUE SEAN VISIBLES LAS CARDS.
             cards.innerHTML = `
             <div class="card shadow" style="width: 18rem;">
                 <img src="${imagenDelProducto}" class="card-img-top animImg" alt="${categoria}, ${ingredientes}">
@@ -59,11 +60,17 @@ const ObtenerDatos = async () => {
                     </div>
                     <div class="selectdeli">
                         <button type="button" class="btn btn-warning" id="${id}">Agregar a carrito</button>
+                        <button class="w-25 bg-warning bg-opacity-25 border rounded d-flex justify-content-around align-items-center" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling">
+                            <i class="fa-solid fa-cart-shopping text-warning"></i>
+                            <span id="${id}-">0</span>
+                        </button>
                     </div>    
                 </div>
             </div>`;
-                
+
             container.appendChild(cards);
+
+
             
             // BOTON AGREGAR AL CARRITO:
             let btnAgregar = document.getElementById(id);
@@ -71,6 +78,7 @@ const ObtenerDatos = async () => {
             btnAgregar.addEventListener("click", () => {   
                 
                 agregarCarrito(id); 
+                CantN(id);
                 
                 Toastify({          // FRAMEWORK - ALERTA CUANDO SE AGREGA UN PRODUCTO AL CARRITO.
                     
@@ -86,7 +94,21 @@ const ObtenerDatos = async () => {
                     
                 }).showToast();
                 
-            });   
+            }); 
+            
+            let btnCant = document.getElementById(`${id}-`)
+
+            const CantN = (ID) => {
+                const existe = carrito.some(prod => prod.id === ID)
+                if (existe) {
+                    carrito.map (prod => {
+                        if (prod.id === ID) {
+                            btnCant.innerHTML = `${prod.cantidad}`;
+                        }
+                    })
+                }
+            }
+
                 
         });
 
@@ -197,64 +219,192 @@ function CarritoSinProd () {
     carritolist.appendChild(alertCarritoVacio)
 };    
 
-// ACCION DE BOTON "COMPRAR"
-btnComprar.addEventListener("click", () => {
 
+
+// ACCION DE BOTON "CONTINUAR CON LA COMPRA"
+btnContCompr.addEventListener("click", (e) => {
+    
+    e.preventDefault();
+
+    //AQUI SE INYECTARA UN FORMULARIO PARA LA COMPRA.
+    const contOffcanvas = document.getElementById("contenedorOffCanvas");
+
+    //SE CREA UN FORM DENTRO DEL CARRITO (SOLO SI HAY PRODUCTOS EN EL CARRITO (CONDICION MAS ABAJO))
+    const formCompra = document.createElement("form");
+    formCompra.setAttribute("class", "p-2 bg-warning bg-opacity-25 mt-2");
+    formCompra.innerHTML = `
+    <div class="mb-3">
+        <label for="nombreCompleto" class="form-label">Nombre y Apellido</label>
+        <input type="text" class="form-control" placeholder="Ingrese su nombre completo" id="nombre" required>
+    </div>
+    <div class="mb-3">
+        <label for="email" class="form-label">Correo electrónico</label>
+        <input type="email" class="form-control" placeholder="Ingrese su correo electrónico" id="email" required>
+    </div>
+    <div class="mb-3">
+        <label for="numero" class="form-label">Número de celular</label>
+        <input type="number" class="form-control" placeholder="11 1234-5678" id="numero" required>
+    </div>
+    <div class="mb-3">
+        <label for="select-envio" class="form-label">Tipo de envio</label>
+        <select class="form-select" aria-label="Default select example" id="select-envio" required>
+            <option value="">-</option>
+            <option value="retiroLocal">Retiro en local</option>
+            <option value="envio">Deseo que me lo envíen</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="direccion" class="form-label">Dirección de envio</label>
+        <input type="text" class="form-control" placeholder="(Solo si desea que se lo envíen)" id="direccion">
+    </div>
+    <div class="mb-3">
+        <label for="localidad" class="form-label">Localidad de envio</label>
+        <input type="text" class="form-control" placeholder="(Solo si desea que se lo envíen)" id="localidad">
+    </div>
+    <div class="form-floating mb-3">
+        <textarea class="form-control" placeholder="Comentario adicional:" id="cajaDeConsulta"></textarea>
+        <label for="cajaDeConsulta">Comentario adicional:</label>
+    </div>
+    <div class="d-flex justify-content-between">
+        <button type="submit" class="fs-3 text-align-center btn btn-warning mt-3 shadow" id="comprar">COMPRAR</button>
+        <button type="reset" class="fs-3 text-align-center btn btn-warning mt-3 shadow">RESETEAR</button>
+    </div>  
+    `;
+    
+
+    //SI EL CARRITO TIENE PRODUCTOS:
     carrito.length > 0 ? (                          // OPERADOR TERNARIO
 
-        // LOS DATOS SE GUARDARIAN EN ALGUN LADO ANTES DE SETEAR CANTIDADES A 1 Y CARRITO A 0.
+        //BOTON "CONTINUAR CON LA COMPRA" AHORA DICE "COMPLETAR FORMULARIO".
+        btnContCompr.innerHTML = "COMPLETAR FORMULARIO",
 
-        Swal.fire({                                 // FRAMEWORK - ALERTA AL PRESIONAR EL BOTON "PEDIR"
-            
-            title: '¡Muchas gracias por tu compra!',
-            text: 'Recibiras un email con la confirmacion del pedido',
-            icon: 'success',
-            footer: 'Ante cualquier duda comuniquese a nuestro numero de wpp'
-            
-        }),
-        
-        carrito.forEach((prod) => {prod.cantidad = 1}),
-        carrito = [],
-        vistaCarrito()
+        //SE DESHABILITA PARA PREVENIR LA CREACION DE MAS FORMULARIOS.
+        btnContCompr.setAttribute("disabled", ""),
+    
+        //SE INYECTA EL FORMULARIO.
+        contOffcanvas.appendChild(formCompra)
+    
 
     ) : (  
 
-        Swal.fire({                                         
+        Swal.fire({          //SWEETALERT2
             title: '¡No ha agregado productos al carrito!',
             icon: 'warning',
-            footer: 'Ante cualquier duda comuniquese a nuestro numero de wpp'
-            
-
+            footer: 'Ante cualquier duda comuniquese a nuestro numero de wpp',
+            customClass: {confirmButton: 'confirmBtn'}, 
         })
-
-    )  
-
-}) 
+        
+    );
 
 
 
+    //BTN "COMPRAR"
+    const comprarBtn = document.getElementById("comprar");
+
+    comprarBtn.addEventListener("click", (e) => {
+        
+        e.preventDefault();
+
+
+        //LLAMADA A INPUTS DEL FORM:
+        let nombreForm = document.getElementById("nombre").value;
+        let emailForm = document.getElementById("email").value;
+        let numeroForm = document.getElementById("numero").value;
+        let envioForm = document.getElementById("select-envio").value;
+        let direccionForm = document.getElementById("direccion").value;
+        let localidadForm = document.getElementById("localidad").value;
+        let consultaForm = document.getElementById("cajaDeConsulta").value;
+        let fecha = new Date();
+
+        class NewCompra {
+            constructor(fecha, nombre, email, numero, tipoEnvio, direccion, localidad, comentario, productos) {
+                this.fecha = fecha;
+                this.nombre = nombre;
+                this.email = email;
+                this.numero = numero;
+                this.tipoEnvio = tipoEnvio;
+                this.direccion = direccion;
+                this.localidad = localidad;
+                this.comentario = comentario;
+                this.productos = productos;
+            }
+        }
+        
+        const NuevaCompra = new NewCompra(
+            fecha.toLocaleString(),
+            nombreForm,
+            emailForm,
+            numeroForm,
+            envioForm,
+            direccionForm,
+            localidadForm,
+            consultaForm,
+            [carrito]
+        )  
+
+        console.log(NuevaCompra)
+        
+        //FUNCION DE FETCH PARA POSTEAR DATOS DE LA COMPRA EN "COMPRAS.JSON" AL CLICKEAR EN "COMPRAR".
+        const enviarDatosCompra = () => {
+        fetch('../javascript/compras.json', {
+
+            method: 'POST',
+            headers: {'content-type': 'application/json; charset=UTF-8'},
+            body: JSON.stringify(NuevaCompra)    
+
+        }) 
+            .then((resp) => resp.json())
+            .then((result) => console.log(result))
+            .catch((error) => console.log(error))
+            
+        } 
 
 
 
+        //CONFIRMO OTRA VEZ QUE EL CARRITO TENGA PRODUCTOS, YA QUE SE PUEDEN ELIMINAR AUNQUE EL FORM YA HAYA SIDO INYECTADO.
+        carrito.length > 0 ? (          // OPERADOR TERNARIO
+
+            //POSTEA LOS DATOS MEDIANTE FETCH AL JSON "COMPRAS"
+            enviarDatosCompra(),
+                
+            //SE RESTABLECEN LAS CANTIDADES A 1 DEL ARRAY CARRITO.
+            carrito.forEach((prod) => {prod.cantidad = 1}),
+
+            //SE VACIA EL CARRITO. 
+            carrito = [],
+
+            //SE ACTUALIZA EL DOM.
+            vistaCarrito(),
+        
+            //SE ELIMINA EL FORMULARIO DE COMPRA.
+            contOffcanvas.removeChild(formCompra),
+
+            //EL BTN PARA ABRIR EL FORMULARIO VUELVE A DECIR:
+            btnContCompr.innerHTML = "CONTINUAR",
+
+            //SE VUELVE A ACTIVAR EL BTN PARA INYECTAR FORMULARIO.
+            btnContCompr.removeAttribute("disabled", ""),
+
+        
+            Swal.fire({                                 //SWEETALERT2
+                title: '¡Muchas gracias por tu compra!',
+                text: 'Recibiras un email con la confirmacion del pedido',
+                icon: 'success',
+                footer: 'Ante cualquier duda comuniquese a nuestro numero de wpp',
+                customClass: {confirmButton: 'confirmBtn'}, 
+            })
+
+        ) : (
+
+            Swal.fire({          //SWEETALERT2
+                title: '¡No ha agregado productos al carrito!',
+                icon: 'warning',
+                footer: 'Ante cualquier duda comuniquese a nuestro numero de wpp',
+                customClass: {confirmButton: 'confirmBtn'}, 
+            })
+        );
+
+    });
 
 
-
-
-
-
-// A IMPLEMENTAR:
-
-// Que funcione la cantidad del mismo producto (N), ubicado dentro de cada card, en el carrito:
-//<button class="w-25 bg-warning bg-opacity-25 border rounded d-flex justify-content-around align-items-center" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling">
-//<i class="fa-solid fa-cart-shopping text-warning"></i>
-//</button> 
-
-// Poder filtrar por categoría. 
-
-// Pedirle más datos al usuario para que el pedido sea más completo (envío, dirección, número de teléfono y numero de mail) (Que se guarden en el localstorage) 
-
-// Opción de envío (zona) que se agregue en el carrito con precio. 
-
-// Descuento por código. 
-
-// Modo Oscuro (Que se guarde en el LocalStorage). 
+}); 
