@@ -20,9 +20,11 @@ document.getElementById('form')
 
         Swal.fire({   //SWEET ALERT 2 - LIBRERIA
             
-            title: 'Mensaje enviado',
-            text: 'Te responderemos a la brevedad',
-            icon: 'success',
+          title: 'Mensaje enviado',
+          text: 'Te responderemos a la brevedad',
+          icon: 'success',
+          customClass: {confirmButton: 'confirmBtn'}, 
+
         
         })
 
@@ -32,9 +34,11 @@ document.getElementById('form')
 
         Swal.fire({   //SWEET ALERT 2 - LIBRERIA
 
-            title: 'No se ha podido enviar el mensaje, intentalo más tarde',
-            text: JSON.stringify(error),
-            icon: 'warning',
+          title: 'No se ha podido enviar el mensaje, intentalo más tarde',
+          text: JSON.stringify(error),
+          icon: 'warning',
+          customClass: {confirmButton: 'confirmBtn'}, 
+
     
         })
 

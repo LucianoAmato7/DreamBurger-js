@@ -9,10 +9,14 @@ let total = document.querySelector("#total");
 // DOM -LLAMADO AL CONTENEDOR DONDE SE INYECTAN LOS PRODUCTOS EN FORMA DE CARDS.
 let container = document.querySelector("#ContainerProd");
 
+// BOTON CONTINUAR (offCanvas)
 let btnContCompr = document.querySelector("#contCompra");
 
 // CARRITO VACIO AL CUAL SE LE AGREGARAN PRODUCTOS.
 let carrito = [];
+
+// DATOS DE LAS COMPRAS.
+let compras = [];
 
 // DOM LLAMA AL CONTADOR.
 let contadorCarrito = document.querySelector("#nCarrito");
@@ -24,7 +28,9 @@ document.addEventListener("DOMContentLoaded", () => {
     ObtenerDatos();
 
     // OPERADOR LOGICO AND. 
-    localStorage.getItem("carrito") && (carrito = JSON.parse(localStorage.getItem("carrito"))),  vistaCarrito();   
+    localStorage.getItem("carrito") && (carrito = JSON.parse(localStorage.getItem("carrito")));  
+    localStorage.getItem("compras") && (compras = JSON.parse(localStorage.getItem("compras"))),  
+    vistaCarrito();  
 
 })
 
@@ -35,7 +41,7 @@ const ObtenerDatos = async () => {
 
         let resp = await fetch("../javascript/products.json");
         let productos = await resp.json();
-
+        
         // REPRESENTACION DE LOS PRODUCTOS EN HTML.
         productos.forEach((producto) => {
             
@@ -71,15 +77,17 @@ const ObtenerDatos = async () => {
             container.appendChild(cards);
 
 
-            
             // BOTON AGREGAR AL CARRITO:
             let btnAgregar = document.getElementById(id);
             
             btnAgregar.addEventListener("click", () => {   
                 
+                //FUNCION EN LINEA 109.
                 agregarCarrito(id); 
-                CantN(id);
-                
+
+                //FUNCION EN LINEA 173.
+                Cant(id);
+
                 Toastify({          // FRAMEWORK - ALERTA CUANDO SE AGREGA UN PRODUCTO AL CARRITO.
                     
                     text: `¡Se ha agregado al carrito!`,
@@ -96,22 +104,8 @@ const ObtenerDatos = async () => {
                 
             }); 
             
-            let btnCant = document.getElementById(`${id}-`)
-
-            const CantN = (ID) => {
-                const existe = carrito.some(prod => prod.id === ID)
-                if (existe) {
-                    carrito.map (prod => {
-                        if (prod.id === ID) {
-                            btnCant.innerHTML = `${prod.cantidad}`;
-                        }
-                    })
-                }
-            }
-
-                
         });
-
+        
         // AGREGAR AL CARRITO - BUSCA EL PRODUCTO QUE COINCIDA CON EL PARAMETRO MEDIANTE ID.
         const agregarCarrito = (prodId) => {      
 
@@ -158,6 +152,31 @@ const ObtenerDatos = async () => {
 };
 
 
+//FUNCION QUE AGREGA EL Nº DE CANTIDAD DEL PRODUCTO EN CARRITO, EN CADA CARD (UBICADO EN LA ESQUINA INFERIOR DERECHA DE CADA CARD)
+//SE EJECUTA AL AGREGAR Y QUITAR PRODUCTOS AL CARRITO.
+const Cant = (id) => {
+
+    const existe = carrito.some(prod => prod.id === id)
+                
+    let btnCant_ = document.getElementById(`${id}-`)
+
+    if (existe) {
+        
+        carrito.forEach(prod => {
+            
+            btnCant_.innerText = prod.cantidad;
+
+        })
+
+    } else {
+
+        btnCant_.innerText = 0;
+
+    }    
+
+}
+
+
 //BTN ELIMINAR PRODUCTO DEL CARRITO, BUSCA Y ELIMINA MEDIANTE ID
 const eliminar = (idProd) => {
 
@@ -167,8 +186,10 @@ const eliminar = (idProd) => {
     // CONDICION PARA QUE ELIMINE DE A 1 UNIDAD DEL PRODUCTO DENTRO DEL CARRITO, SI SOLO HAY 1 UNIDAD ELIMINA EL PRODUCTO E IGUALA LA CANTIDAD AL DEFAULT(1).
     (item.cantidad > 1) ? item.cantidad-- : (carrito.splice(indice, 1), item.cantidad = 1)
 
+    //funcion en linea 173.
+    Cant(idProd);
+
     vistaCarrito();
-    return item
 }
 
 // AGREGA PRODUCTOS AL CARRITO DEL HTML (offcanvas) - ACTUALIZA EL CARRITO CON LOS PRODUCTOS NUEVOS.
@@ -187,8 +208,9 @@ const vistaCarrito = () => {
         <span class="pe-2 border-end border-1 border-dark">${cantidad}u.</span>
         <img src="${imagenDelProducto}" class="w-25" alt="producto"> ${nombre} - $${precio}
         <button onclick="eliminar(${id})" class="p-2 border rounded d-flex align-items-center btn btn-danger text-dark">
-            <i class="fa-solid fa-trash-can"></i>
+        <i class="fa-solid fa-trash-can"></i>
         </button>`;
+        
         carritolist.appendChild(listado)
 
     })
@@ -282,7 +304,10 @@ btnContCompr.addEventListener("click", (e) => {
         btnContCompr.setAttribute("disabled", ""),
     
         //SE INYECTA EL FORMULARIO.
-        contOffcanvas.appendChild(formCompra)
+        contOffcanvas.appendChild(formCompra),
+
+        //FUNCIONALIDADES QUE SE EJECUTAN AL CLICKEAR EL BOTON "COMPRAR" AL FINAL DEL FORMULARIO DE COMPRA
+        EtapaFinalCompra()
     
 
     ) : (  
@@ -296,115 +321,107 @@ btnContCompr.addEventListener("click", (e) => {
         
     );
 
+    function EtapaFinalCompra () {
 
+        //BTN "COMPRAR"
+        const comprarBtn = document.getElementById("comprar");
 
-    //BTN "COMPRAR"
-    const comprarBtn = document.getElementById("comprar");
-
-    comprarBtn.addEventListener("click", (e) => {
-        
-        e.preventDefault();
-
-
-        //LLAMADA A INPUTS DEL FORM:
-        let nombreForm = document.getElementById("nombre").value;
-        let emailForm = document.getElementById("email").value;
-        let numeroForm = document.getElementById("numero").value;
-        let envioForm = document.getElementById("select-envio").value;
-        let direccionForm = document.getElementById("direccion").value;
-        let localidadForm = document.getElementById("localidad").value;
-        let consultaForm = document.getElementById("cajaDeConsulta").value;
-        let fecha = new Date();
-
-        class NewCompra {
-            constructor(fecha, nombre, email, numero, tipoEnvio, direccion, localidad, comentario, productos) {
-                this.fecha = fecha;
-                this.nombre = nombre;
-                this.email = email;
-                this.numero = numero;
-                this.tipoEnvio = tipoEnvio;
-                this.direccion = direccion;
-                this.localidad = localidad;
-                this.comentario = comentario;
-                this.productos = productos;
-            }
-        }
-        
-        const NuevaCompra = new NewCompra(
-            fecha.toLocaleString(),
-            nombreForm,
-            emailForm,
-            numeroForm,
-            envioForm,
-            direccionForm,
-            localidadForm,
-            consultaForm,
-            [carrito]
-        )  
-
-        console.log(NuevaCompra)
-        
-        //FUNCION DE FETCH PARA POSTEAR DATOS DE LA COMPRA EN "COMPRAS.JSON" AL CLICKEAR EN "COMPRAR".
-        const enviarDatosCompra = () => {
-        fetch('../javascript/compras.json', {
-
-            method: 'POST',
-            headers: {'content-type': 'application/json; charset=UTF-8'},
-            body: JSON.stringify(NuevaCompra)    
-
-        }) 
-            .then((resp) => resp.json())
-            .then((result) => console.log(result))
-            .catch((error) => console.log(error))
+        comprarBtn.addEventListener("click", (e) => {
             
-        } 
+            e.preventDefault();
+
+
+            //LLAMADA A INPUTS DEL FORM:
+            let nombreForm = document.getElementById("nombre").value;
+            let emailForm = document.getElementById("email").value;
+            let numeroForm = document.getElementById("numero").value;
+            let envioForm = document.getElementById("select-envio").value;
+            let direccionForm = document.getElementById("direccion").value;
+            let localidadForm = document.getElementById("localidad").value;
+            let consultaForm = document.getElementById("cajaDeConsulta").value;
+            let fecha = new Date();
+
+            class NewCompra {
+                constructor(fecha, nombre, email, numero, tipoEnvio, direccion, localidad, comentario, productos) {
+                    this.fecha = fecha;
+                    this.nombre = nombre;
+                    this.email = email;
+                    this.numero = numero;
+                    this.tipoEnvio = tipoEnvio;
+                    this.direccion = direccion;
+                    this.localidad = localidad;
+                    this.comentario = comentario;
+                    this.productos = productos;
+                }
+            }
+            
+            const NuevaCompra = new NewCompra(
+                fecha.toLocaleString(),
+                nombreForm,
+                emailForm,
+                numeroForm,
+                envioForm,
+                direccionForm,
+                localidadForm,
+                consultaForm,
+                [carrito]
+            )  
+            
+            //FUNCION QUE PUSHEA EL OBJETO CREADO CON LOS DATOS DE LA COMPRA EN EL ARRAY "COMPRAS".
+            const enviarDatosCompra = () => {
+
+                compras.push(NuevaCompra);
+                localStorage.setItem("compras", JSON.stringify(compras));
+
+            } 
 
 
 
-        //CONFIRMO OTRA VEZ QUE EL CARRITO TENGA PRODUCTOS, YA QUE SE PUEDEN ELIMINAR AUNQUE EL FORM YA HAYA SIDO INYECTADO.
-        carrito.length > 0 ? (          // OPERADOR TERNARIO
+            //CONFIRMO OTRA VEZ QUE EL CARRITO TENGA PRODUCTOS, YA QUE SE PUEDEN ELIMINAR AUNQUE EL FORM YA HAYA SIDO INYECTADO.
+            carrito.length > 0 ? (          // OPERADOR TERNARIO
 
-            //POSTEA LOS DATOS MEDIANTE FETCH AL JSON "COMPRAS"
-            enviarDatosCompra(),
-                
-            //SE RESTABLECEN LAS CANTIDADES A 1 DEL ARRAY CARRITO.
-            carrito.forEach((prod) => {prod.cantidad = 1}),
+                //POSTEA LOS DATOS MEDIANTE FETCH AL JSON "COMPRAS"
+                enviarDatosCompra(),
+                    
+                //SE RESTABLECEN LAS CANTIDADES A 1 (predeterminado en array productos) DEL ARRAY CARRITO.
+                carrito.forEach((prod) => {prod.cantidad = 1}),
 
-            //SE VACIA EL CARRITO. 
-            carrito = [],
+                //SE VACIA EL CARRITO. 
+                carrito = [],
 
-            //SE ACTUALIZA EL DOM.
-            vistaCarrito(),
-        
-            //SE ELIMINA EL FORMULARIO DE COMPRA.
-            contOffcanvas.removeChild(formCompra),
+                //SE ACTUALIZA EL DOM DEL CARRITO.
+                vistaCarrito(),
+            
+                //SE ELIMINA EL FORMULARIO DE COMPRA.
+                contOffcanvas.removeChild(formCompra),
 
-            //EL BTN PARA ABRIR EL FORMULARIO VUELVE A DECIR:
-            btnContCompr.innerHTML = "CONTINUAR",
+                //EL BTN PARA ABRIR EL FORMULARIO VUELVE A DECIR:
+                btnContCompr.innerHTML = "CONTINUAR",
 
-            //SE VUELVE A ACTIVAR EL BTN PARA INYECTAR FORMULARIO.
-            btnContCompr.removeAttribute("disabled", ""),
+                //SE VUELVE A ACTIVAR EL BTN PARA INYECTAR FORMULARIO.
+                btnContCompr.removeAttribute("disabled", ""),
 
-        
-            Swal.fire({                                 //SWEETALERT2
-                title: '¡Muchas gracias por tu compra!',
-                text: 'Recibiras un email con la confirmacion del pedido',
-                icon: 'success',
-                footer: 'Ante cualquier duda comuniquese a nuestro numero de wpp',
-                customClass: {confirmButton: 'confirmBtn'}, 
-            })
+            
+                Swal.fire({                                 //SWEETALERT2
+                    title: '¡Muchas gracias por tu compra!',
+                    text: 'Recibiras un email con la confirmacion del pedido',
+                    icon: 'success',
+                    footer: 'Ante cualquier duda comuniquese a nuestro numero de wpp',
+                    customClass: {confirmButton: 'confirmBtn'}, 
+                })
 
-        ) : (
+            ) : (
 
-            Swal.fire({          //SWEETALERT2
-                title: '¡No ha agregado productos al carrito!',
-                icon: 'warning',
-                footer: 'Ante cualquier duda comuniquese a nuestro numero de wpp',
-                customClass: {confirmButton: 'confirmBtn'}, 
-            })
-        );
+                Swal.fire({          //SWEETALERT2
+                    title: '¡No ha agregado productos al carrito!',
+                    icon: 'warning',
+                    footer: 'Ante cualquier duda comuniquese a nuestro numero de wpp',
+                    customClass: {confirmButton: 'confirmBtn'}, 
+                })
+            );
 
-    });
+        });
 
+    };
 
 }); 
