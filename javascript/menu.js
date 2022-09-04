@@ -1,12 +1,12 @@
-// Carrito de compra.
+// Carrito de compras.
 
-// DOM - LLAMADO AL LISTADO DEL CARRITO (ul) EN HTML (offcanvas).
+// LISTADO DEL CARRITO (ul) EN HTML (offcanvas).
 let carritolist = document.querySelector("#listCarrito");
 
-// DOM - LLAMADO AL (p) EN DONDE FIGURARA EL TOTAL DEL CARRITO.
+// LLAMADO AL (p) EN DONDE FIGURARÁ EL TOTAL DEL CARRITO.
 let total = document.querySelector("#total");
 
-// DOM -LLAMADO AL CONTENEDOR DONDE SE INYECTAN LOS PRODUCTOS EN FORMA DE CARDS.
+// LLAMADO AL CONTENEDOR DONDE SE INYECTAN LOS PRODUCTOS EN FORMA DE CARDS.
 let container = document.querySelector("#ContainerProd");
 
 // BOTON CONTINUAR (offCanvas)
@@ -15,22 +15,24 @@ let btnContCompr = document.querySelector("#contCompra");
 // CARRITO VACIO AL CUAL SE LE AGREGARAN PRODUCTOS.
 let carrito = [];
 
-// DATOS DE LAS COMPRAS.
+// REGISTRO DE LAS COMPRAS EFECTUADAS.
 let compras = [];
 
-// DOM LLAMA AL CONTADOR.
+// LLAMA AL CONTADOR DE PRODUCTOS DENTRO DE CARRITO (NavBar).
 let contadorCarrito = document.querySelector("#nCarrito");
 
-// LOCALSTORAGE LLAMA AL CARRITO SETEADO
 document.addEventListener("DOMContentLoaded", () => {
 
-    // EJECUTA LA LLAMADA A DATOS (PRODUCTOS) CON FETCH.
+    // EJECUTA LA LLAMADA A DATOS (PRODUCTOS) CON FETCH (linea 40).
     ObtenerDatos();
 
     // OPERADOR LOGICO AND. 
+    // LOCALSTORAGE LLAMA AL CARRITO Y AL REGISTRO DE COMPRAS.
     localStorage.getItem("carrito") && (carrito = JSON.parse(localStorage.getItem("carrito")));  
     localStorage.getItem("compras") && (compras = JSON.parse(localStorage.getItem("compras"))),  
-    vistaCarrito();  
+
+    // ACTUALIZA LA VISTA (html) DEL CARRITO (linea 220)
+    vistaCarrito(); 
 
 })
 
@@ -76,16 +78,18 @@ const ObtenerDatos = async () => {
 
             container.appendChild(cards);
 
+            //Funcion en linea 173
+            Cant(id);
 
             // BOTON AGREGAR AL CARRITO:
             let btnAgregar = document.getElementById(id);
             
             btnAgregar.addEventListener("click", () => {   
                 
-                //FUNCION EN LINEA 109.
+                //Funcion en linea 123.
                 agregarCarrito(id); 
 
-                //FUNCION EN LINEA 173.
+                //Funcion en linea 173.
                 Cant(id);
 
                 Toastify({          // FRAMEWORK - ALERTA CUANDO SE AGREGA UN PRODUCTO AL CARRITO.
@@ -105,13 +109,22 @@ const ObtenerDatos = async () => {
             }); 
             
         });
+
+        Toastify({          // FRAMEWORK - ALERTA CUANDO SE CARGEN EXITOSAMENTE LOS DATOS.
+            
+            text: `Datos cargados con exito`,
+            duration: 2000,
+            className: "alertaToastDatos",           // LOS ESTILOS ESTAN EN EL SCSS "MENU".
+            position: "center",
+            
+        }).showToast();
         
         // AGREGAR AL CARRITO - BUSCA EL PRODUCTO QUE COINCIDA CON EL PARAMETRO MEDIANTE ID.
         const agregarCarrito = (prodId) => {      
 
-            // SUMA DE CANTIDAD DE C/U DE LOS PRODUCTOS DENTRO DEL CARRITO.
             const existe = carrito.some(prod => prod.id === prodId)
 
+            // SI EL PRODUCTO SELECCIONADO NO ESTA EN EL CARRITO, LO PUSHEA. SI ESTA, VA SUMANDO Y MODIFICANDO SU CANTIDAD.
             if(existe) {
 
                 carrito.map(prod => {
@@ -127,33 +140,36 @@ const ObtenerDatos = async () => {
                 
                 const itemId = productos.find((producto) => producto.id === prodId);
                 carrito.push(itemId);
-
+                
             }
 
+            // Func en linea 220.
             vistaCarrito();
         };
 
     } catch (error) {
         
         console.log(error);
-        
-    } finally {
-        
-        Toastify({          // FRAMEWORK - ALERTA CUANDO SE CARGANE EXITOSAMENTE LOS DATOS.
+
+        Toastify({          // FRAMEWORK - ALERTA CUANDO NO SE HAYAN PODIDO CARGAR LOS DATOS.
             
-            text: `Datos cargados con exito`,
-            duration: 1000,
-            className: "alertaToastDatos",           // LOS ESTILOS ESTAN EN EL SCSS "MENU".
+            text: `Error al cargar los datos`,
+            duration: 3000,
+            className: "alertaToastDatosError",           // LOS ESTILOS ESTAN EN EL SCSS "MENU".
             position: "center",
             
         }).showToast();
+        
+    } finally {
+
+        console.log("Petición de datos ejecutada")
+
     }
     
 };
 
 
-//FUNCION QUE AGREGA EL Nº DE CANTIDAD DEL PRODUCTO EN CARRITO, EN CADA CARD (UBICADO EN LA ESQUINA INFERIOR DERECHA DE CADA CARD)
-//SE EJECUTA AL AGREGAR Y QUITAR PRODUCTOS AL CARRITO.
+//FUNCION QUE INYECTA EL Nº DE CANTIDAD DEL PRODUCTO EN CARRITO, EN CADA CARD (UBICADO EN LA ESQUINA INFERIOR DERECHA DE CADA CARD)
 const Cant = (id) => {
 
     const existe = carrito.some(prod => prod.id === id)
@@ -161,44 +177,52 @@ const Cant = (id) => {
     let btnCant_ = document.getElementById(`${id}-`)
 
     if (existe) {
-        
+
         carrito.forEach(prod => {
             
-            btnCant_.innerText = prod.cantidad;
+            if (prod.id === id) {
+
+                btnCant_.innerText = prod.cantidad;
+
+            }
 
         })
 
     } else {
 
+        //SI NO SE ENCUENTRA EN EL CARRITO (EL PROD), FIGURARÁ UNA CANTIDAD "0", YA QUE LAS CANTIDADES POR DEFAULT SON "1".
         btnCant_.innerText = 0;
 
-    }    
+    };   
+};     
 
-}
 
 
-//BTN ELIMINAR PRODUCTO DEL CARRITO, BUSCA Y ELIMINA MEDIANTE ID
+
+//BTN ELIMINAR PRODUCTO DEL CARRITO, BUSCA Y ELIMINA MEDIANTE ID O ACTUALIZA CANTIDAD.
 const eliminar = (idProd) => {
 
     const item = carrito.find((producto) => producto.id === idProd);
+
     const indice = carrito.indexOf(item);
     
-    // CONDICION PARA QUE ELIMINE DE A 1 UNIDAD DEL PRODUCTO DENTRO DEL CARRITO, SI SOLO HAY 1 UNIDAD ELIMINA EL PRODUCTO E IGUALA LA CANTIDAD AL DEFAULT(1).
-    (item.cantidad > 1) ? item.cantidad-- : (carrito.splice(indice, 1), item.cantidad = 1)
+    // CONDICION PARA QUE ELIMINE DE A 1 UNIDAD DEL PRODUCTO DENTRO DEL CARRITO, SI SOLO HAY 1 UNIDAD DEL PRODUCTO, LO ELIMINA. (UNIDAD = CANTIDAD)
+    (item.cantidad > 1) ? item.cantidad-- : carrito.splice(indice, 1)
 
     //funcion en linea 173.
     Cant(idProd);
 
+    //funcion en linea 220.
     vistaCarrito();
 }
 
 // AGREGA PRODUCTOS AL CARRITO DEL HTML (offcanvas) - ACTUALIZA EL CARRITO CON LOS PRODUCTOS NUEVOS.
 const vistaCarrito = () => {
 
-    // BORRO EL CONTENIDO PARA LUEGO ACTUALIZARLO CON LOS PRODUCTOS NUEVOS.
+    // BORRO EL CONTENIDO PARA LUEGO ACTUALIZARLO CON LOS PRODUCTOS ACTUALES DEL CARRITO.
     carritolist.innerHTML= ""
 
-    // RECORRO EL CARRITO (ARRAY) Y POR CADA PRODUCTO CREO UN LI CON UN BOTON PARA ELIMINARLO (HTML - offcanvas)
+    // RECORRO EL CARRITO Y POR CADA PRODUCTO CREO UN LI CON UN BOTON PARA ELIMINARLO (HTML - offcanvas)
     carrito.forEach((producto) => {
 
         const {id, cantidad, nombre, precio, img: imagenDelProducto} = producto;           // DESESTRUCTURACION - ALIAS APLICADO.
@@ -211,7 +235,7 @@ const vistaCarrito = () => {
         <i class="fa-solid fa-trash-can"></i>
         </button>`;
         
-        carritolist.appendChild(listado)
+        carritolist.appendChild(listado);
 
     })
     
@@ -221,12 +245,18 @@ const vistaCarrito = () => {
 
     // SOLO SI HAY PRODUCTOS DENTRO DEL CARRITO SE CREA LA NOTIFICACION CON EL NUM DE PRODUCTOS DEL CARRITO EN EL NAV.
     // SI NO HAY PRODUCTOS LA OCULTA Y EJECUTA LA FUNCION QUE CREA UN LI NOTIFICANDO QUE NO HAY PRODUCTOS EN EL CARRITO.
-    carrito.length > 0 ? (                              // OPERADOR TERNARIO
+    carrito.length > 0 ? (     
+
         contadorCarrito.style.visibility = "visible",
-        contadorCarrito.innerHTML = carrito.length
+        contadorCarrito.innerHTML = carrito.reduce((acum, prod) => acum + prod.cantidad, 0)
+
     ) : (
+
         contadorCarrito.style.visibility = "hidden",
+
+        //funcion en linea 267.
         CarritoSinProd()
+
     );
 
     // SUMA TOTAL DE LOS PRODUCTOS DEL CARRITO.
@@ -243,7 +273,7 @@ function CarritoSinProd () {
 
 
 
-// ACCION DE BOTON "CONTINUAR CON LA COMPRA"
+// ACCION DE BOTON "CONTINUAR"
 btnContCompr.addEventListener("click", (e) => {
     
     e.preventDefault();
@@ -251,7 +281,7 @@ btnContCompr.addEventListener("click", (e) => {
     //AQUI SE INYECTARA UN FORMULARIO PARA LA COMPRA.
     const contOffcanvas = document.getElementById("contenedorOffCanvas");
 
-    //SE CREA UN FORM DENTRO DEL CARRITO (SOLO SI HAY PRODUCTOS EN EL CARRITO (CONDICION MAS ABAJO))
+    //SE CREA UN FORM DENTRO DEL CARRITO (SOLO SI HAY PRODUCTOS EN EL CARRITO (CONDICION EN LINEA 328))
     const formCompra = document.createElement("form");
     formCompra.setAttribute("class", "p-2 bg-warning bg-opacity-25 mt-2");
     formCompra.innerHTML = `
@@ -297,19 +327,18 @@ btnContCompr.addEventListener("click", (e) => {
     //SI EL CARRITO TIENE PRODUCTOS:
     carrito.length > 0 ? (                          // OPERADOR TERNARIO
 
-        //BOTON "CONTINUAR CON LA COMPRA" AHORA DICE "COMPLETAR FORMULARIO".
+        //BOTON "CONTINUAR" AHORA DIRA "COMPLETAR FORMULARIO".
         btnContCompr.innerHTML = "COMPLETAR FORMULARIO",
 
-        //SE DESHABILITA PARA PREVENIR LA CREACION DE MAS FORMULARIOS.
+        //SE DESHABILITA EL BTN "CONTINUAR" PARA PREVENIR LA CREACION DE MAS FORMULARIOS.
         btnContCompr.setAttribute("disabled", ""),
     
         //SE INYECTA EL FORMULARIO.
         contOffcanvas.appendChild(formCompra),
 
-        //FUNCIONALIDADES QUE SE EJECUTAN AL CLICKEAR EL BOTON "COMPRAR" AL FINAL DEL FORMULARIO DE COMPRA
+        //FUNCION QUE SE  EJECUTA AL CLICKEAR EL BOTON "COMPRAR" AL FINAL DEL FORMULARIO DE COMPRA. (LINEA 353)
         EtapaFinalCompra()
     
-
     ) : (  
 
         Swal.fire({          //SWEETALERT2
@@ -321,7 +350,7 @@ btnContCompr.addEventListener("click", (e) => {
         
     );
 
-    function EtapaFinalCompra () {
+    function EtapaFinalCompra() {
 
         //BTN "COMPRAR"
         const comprarBtn = document.getElementById("comprar");
@@ -330,8 +359,7 @@ btnContCompr.addEventListener("click", (e) => {
             
             e.preventDefault();
 
-
-            //LLAMADA A INPUTS DEL FORM:
+            //LLAMADA A LOS DATOS DE LOS INPUTS DEL FORM:
             let nombreForm = document.getElementById("nombre").value;
             let emailForm = document.getElementById("email").value;
             let numeroForm = document.getElementById("numero").value;
@@ -367,7 +395,7 @@ btnContCompr.addEventListener("click", (e) => {
                 [carrito]
             )  
             
-            //FUNCION QUE PUSHEA EL OBJETO CREADO CON LOS DATOS DE LA COMPRA EN EL ARRAY "COMPRAS".
+            //FUNCION QUE PUSHEA EL OBJETO CREADO CON LOS DATOS DE LA COMPRA EN EL ARRAY "COMPRAS" (PARA EL REGISTRO DE COMPRAS).
             const enviarDatosCompra = () => {
 
                 compras.push(NuevaCompra);
@@ -376,20 +404,30 @@ btnContCompr.addEventListener("click", (e) => {
             } 
 
 
-
             //CONFIRMO OTRA VEZ QUE EL CARRITO TENGA PRODUCTOS, YA QUE SE PUEDEN ELIMINAR AUNQUE EL FORM YA HAYA SIDO INYECTADO.
             carrito.length > 0 ? (          // OPERADOR TERNARIO
 
-                //POSTEA LOS DATOS MEDIANTE FETCH AL JSON "COMPRAS"
+                //Funcion en linea 399.
                 enviarDatosCompra(),
+                
+                carrito.forEach((prod) => {
                     
-                //SE RESTABLECEN LAS CANTIDADES A 1 (predeterminado en array productos) DEL ARRAY CARRITO.
-                carrito.forEach((prod) => {prod.cantidad = 1}),
+                    //PRIMERO SETEAMOS LAS CANTIDADES A 0
+                    prod.cantidad = 0;
 
+                    //PARA QUE APAREZCA EL NUMERO DE CANTIDAD 0 DENTRO DEL CONTADOR DE PROD DENTRO DEL CARRITO (CADA CARD) (funcion linea 173)
+                    Cant(prod.id);
+
+                    //LUEGO REESTABLECEMOS EL VALOR POR DEFAULT DE LAS CANTIDADES DENTRO DEL ARRAY "PRODUCTOS".JSON.
+                    //YA QUE, AL QUERER REALIZAR OTRA COMPRA Y AGREGAR LOS MISMOS PRODUCTOS, ESTOS SE PUSHEARIAN AL CARRITO CON CANTIDAD = 0.
+                    prod.cantidad = 1;
+
+                }),
+                
                 //SE VACIA EL CARRITO. 
                 carrito = [],
 
-                //SE ACTUALIZA EL DOM DEL CARRITO.
+                //SE ACTUALIZA LA VISTA DEL CARRITO. (funcion en linea 220)
                 vistaCarrito(),
             
                 //SE ELIMINA EL FORMULARIO DE COMPRA.
@@ -398,9 +436,8 @@ btnContCompr.addEventListener("click", (e) => {
                 //EL BTN PARA ABRIR EL FORMULARIO VUELVE A DECIR:
                 btnContCompr.innerHTML = "CONTINUAR",
 
-                //SE VUELVE A ACTIVAR EL BTN PARA INYECTAR FORMULARIO.
+                //SE VUELVE A ACTIVAR EL BTN "CONTINUAR" PARA INYECTAR FORMULARIO.
                 btnContCompr.removeAttribute("disabled", ""),
-
             
                 Swal.fire({                                 //SWEETALERT2
                     title: '¡Muchas gracias por tu compra!',

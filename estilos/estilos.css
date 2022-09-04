@@ -200,6 +200,14 @@ footer p {
   background: linear-gradient(320deg, #ffffa4 0, #ffffa2 8.33%, #ffffa0 16.67%, #ffffa0 25%, #edffa0 33.33%, #d3ff9f 41.67%, #b9f29d 50%, #a1e29b 58.33%, #8dd599 66.67%, #7bc999 75%, #6cbf99 83.33%, #60b79a 91.67%, #56b19c 100%);
 }
 
+.alertaToastDatosError {
+  color: black;
+  font-size: 25px;
+  font-style: italic;
+  border-radius: 10px;
+  background: radial-gradient(circle at 120.71% 50%, #d7c35d 0, #deba54 8.33%, #e4b04d 16.67%, #e9a546 25%, #ed9841 33.33%, #f0893e 41.67%, #f2793c 50%, #f3673d 58.33%, #f35542 66.67%, #f34249 75%, #f22b52 83.33%, #f0065d 91.67%, #ec0069 100%);
+}
+
 .swal2-styled.swal2-confirm.confirmBtn {
   color: black;
   background: radial-gradient(circle at 104.17% 95.45%, #e4f995 0, #e8ee84 10%, #ebe272 20%, #eed560 30%, #f1c64e 40%, #f2b53c 50%, #f3a42c 60%, #f69221 70%, #f8801d 80%, #fb6e20 90%, #fd5b27 100%);
