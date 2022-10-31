@@ -23,7 +23,7 @@ let contadorCarrito = document.querySelector("#nCarrito");
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    // EJECUTA LA LLAMADA A DATOS (PRODUCTOS) CON FETCH (linea 40).
+    // EJECUTA LA LLAMADA A DATOS (PRODUCTOS) CON FETCH
     ObtenerDatos();
 
     // OPERADOR LOGICO AND. 
@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.getItem("carrito") && (carrito = JSON.parse(localStorage.getItem("carrito")));  
     localStorage.getItem("compras") && (compras = JSON.parse(localStorage.getItem("compras"))),  
 
-    // ACTUALIZA LA VISTA (html) DEL CARRITO (linea 220)
+    // ACTUALIZA LA VISTA (html) DEL CARRITO 
     vistaCarrito(); 
 
 })
@@ -78,7 +78,6 @@ const ObtenerDatos = async () => {
 
             container.appendChild(cards);
 
-            //Funcion en linea 173
             Cant(id);
 
             // BOTON AGREGAR AL CARRITO:
@@ -86,10 +85,8 @@ const ObtenerDatos = async () => {
             
             btnAgregar.addEventListener("click", () => {   
                 
-                //Funcion en linea 123.
                 agregarCarrito(id); 
 
-                //Funcion en linea 173.
                 Cant(id);
 
                 Toastify({          // FRAMEWORK - ALERTA CUANDO SE AGREGA UN PRODUCTO AL CARRITO.
@@ -209,10 +206,8 @@ const eliminar = (idProd) => {
     // CONDICION PARA QUE ELIMINE DE A 1 UNIDAD DEL PRODUCTO DENTRO DEL CARRITO, SI SOLO HAY 1 UNIDAD DEL PRODUCTO, LO ELIMINA. (UNIDAD = CANTIDAD)
     (item.cantidad > 1) ? item.cantidad-- : carrito.splice(indice, 1)
 
-    //funcion en linea 173.
     Cant(idProd);
 
-    //funcion en linea 220.
     vistaCarrito();
 }
 
@@ -254,7 +249,6 @@ const vistaCarrito = () => {
 
         contadorCarrito.style.visibility = "hidden",
 
-        //funcion en linea 267.
         CarritoSinProd()
 
     );
@@ -272,6 +266,21 @@ function CarritoSinProd () {
 };    
 
 
+//CONSTRUCTOR DE LA COMPRA LA CUAL SE REGISTRARA EN UN ARRAY.
+class NewCompra {
+    constructor(fecha, nombre, email, numero, tipoEnvio, direccion, localidad, comentario, productos) {
+        this.fecha = fecha;
+        this.nombre = nombre;
+        this.email = email;
+        this.numero = numero;
+        this.tipoEnvio = tipoEnvio;
+        this.direccion = direccion;
+        this.localidad = localidad;
+        this.comentario = comentario;
+        this.productos = productos;
+    }
+}
+
 
 // ACCION DE BOTON "CONTINUAR"
 btnContCompr.addEventListener("click", (e) => {
@@ -281,9 +290,10 @@ btnContCompr.addEventListener("click", (e) => {
     //AQUI SE INYECTARA UN FORMULARIO PARA LA COMPRA.
     const contOffcanvas = document.getElementById("contenedorOffCanvas");
 
-    //SE CREA UN FORM DENTRO DEL CARRITO (SOLO SI HAY PRODUCTOS EN EL CARRITO (CONDICION EN LINEA 328))
+    //SE CREA UN FORM DENTRO DEL CARRITO (SOLO SI HAY PRODUCTOS EN EL CARRITO 
     const formCompra = document.createElement("form");
     formCompra.setAttribute("class", "p-2 bg-warning bg-opacity-25 mt-2");
+    formCompra.setAttribute("id", "comprar");
     formCompra.innerHTML = `
     <div class="mb-3">
         <label for="nombreCompleto" class="form-label">Nombre y Apellido</label>
@@ -318,7 +328,7 @@ btnContCompr.addEventListener("click", (e) => {
         <label for="cajaDeConsulta">Comentario adicional:</label>
     </div>
     <div class="d-flex justify-content-between">
-        <button type="submit" class="fs-3 text-align-center btn btn-warning mt-3 shadow" id="comprar">COMPRAR</button>
+        <button type="submit" class="fs-3 text-align-center btn btn-warning mt-3 shadow">COMPRAR</button>
         <button type="reset" class="fs-3 text-align-center btn btn-warning mt-3 shadow">RESETEAR</button>
     </div>  
     `;
@@ -336,7 +346,7 @@ btnContCompr.addEventListener("click", (e) => {
         //SE INYECTA EL FORMULARIO.
         contOffcanvas.appendChild(formCompra),
 
-        //FUNCION QUE SE  EJECUTA AL CLICKEAR EL BOTON "COMPRAR" AL FINAL DEL FORMULARIO DE COMPRA. (LINEA 353)
+        //FUNCION QUE SE  EJECUTA AL CLICKEAR EL BOTON "COMPRAR" AL FINAL DEL FORMULARIO DE COMPRA.
         EtapaFinalCompra()
     
     ) : (  
@@ -355,7 +365,9 @@ btnContCompr.addEventListener("click", (e) => {
         //BTN "COMPRAR"
         const comprarBtn = document.getElementById("comprar");
 
-        comprarBtn.addEventListener("click", (e) => {
+        comprarBtn.addEventListener("submit", (e) => {
+
+                
             
             e.preventDefault();
 
@@ -369,19 +381,6 @@ btnContCompr.addEventListener("click", (e) => {
             let consultaForm = document.getElementById("cajaDeConsulta").value;
             let fecha = new Date();
 
-            class NewCompra {
-                constructor(fecha, nombre, email, numero, tipoEnvio, direccion, localidad, comentario, productos) {
-                    this.fecha = fecha;
-                    this.nombre = nombre;
-                    this.email = email;
-                    this.numero = numero;
-                    this.tipoEnvio = tipoEnvio;
-                    this.direccion = direccion;
-                    this.localidad = localidad;
-                    this.comentario = comentario;
-                    this.productos = productos;
-                }
-            }
             
             const NuevaCompra = new NewCompra(
                 fecha.toLocaleString(),
@@ -407,7 +406,6 @@ btnContCompr.addEventListener("click", (e) => {
             //CONFIRMO OTRA VEZ QUE EL CARRITO TENGA PRODUCTOS, YA QUE SE PUEDEN ELIMINAR AUNQUE EL FORM YA HAYA SIDO INYECTADO.
             carrito.length > 0 ? (          // OPERADOR TERNARIO
 
-                //Funcion en linea 399.
                 enviarDatosCompra(),
                 
                 carrito.forEach((prod) => {
@@ -415,7 +413,7 @@ btnContCompr.addEventListener("click", (e) => {
                     //PRIMERO SETEAMOS LAS CANTIDADES A 0
                     prod.cantidad = 0;
 
-                    //PARA QUE APAREZCA EL NUMERO DE CANTIDAD 0 DENTRO DEL CONTADOR DE PROD DENTRO DEL CARRITO (CADA CARD) (funcion linea 173)
+                    //PARA QUE APAREZCA EL NUMERO DE CANTIDAD 0 DENTRO DEL CONTADOR DE PROD DENTRO DEL CARRITO (CADA CARD)
                     Cant(prod.id);
 
                     //LUEGO REESTABLECEMOS EL VALOR POR DEFAULT DE LAS CANTIDADES DENTRO DEL ARRAY "PRODUCTOS".JSON.
@@ -427,7 +425,7 @@ btnContCompr.addEventListener("click", (e) => {
                 //SE VACIA EL CARRITO. 
                 carrito = [],
 
-                //SE ACTUALIZA LA VISTA DEL CARRITO. (funcion en linea 220)
+                //SE ACTUALIZA LA VISTA DEL CARRITO.
                 vistaCarrito(),
             
                 //SE ELIMINA EL FORMULARIO DE COMPRA.
